@@ -1,62 +1,164 @@
 # paradu'l
 
 ## 1. Overview
-paradu'l is a web application that helps users digitally organize their wardrobe, mix and match outfits, and use personalized data insights to make smarter fashion choices. It solves the problem of impulsive shopping and wardrobe underutilization by giving people a visual inventory of what they already own to better understand their personal style.
 
-## 2. Setup and installation
-*Note: The application is currently in Week 1 scaffolding (Demo Mode). No database or API is required to run this version.*
+**paradu'l** is a web application that helps users digitally organize their wardrobe, mix and match outfits, and use personalized data insights to make smarter fashion choices.
 
-*   **Prerequisites:** Node.js installed on your machine.
-*   **Clone the repository:** `git clone https://github.com/Jeniii26/Paradul-Tongol.git`
-*   **Install dependencies:** Run `npm install` inside the project folder.
-*   **Environment variables:** None required for Week 1 (Mock API mode). Placeholders will be added when the server is built.
-*   **Database setup:** Pending for Week 2 (PostgreSQL).
+It aims to address impulsive shopping and wardrobe underutilization by providing users with a visual inventory of the clothing items they already own, allowing them to better understand and manage their personal style.
 
-## 3. How to run it
+## 2. Setup and Installation
+
+> **Note:** The application is currently in **Week 1 scaffolding (Demo Mode)**. No database or backend API is required to run this version.
+
+### Prerequisites
+
+* [Node.js](https://nodejs.org/) installed on your machine.
+* Git installed on your machine.
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/Jeniii26/Paradul-Tongol.git
+cd Paradul-Tongol
+```
+
+### Install Dependencies
+
+Run the following command inside the project folder:
+
+```bash
+npm install
+```
+
+### Environment Variables
+
+No environment variables are required for Week 1.
+
+The current prototype uses mock data and local React state. Environment variable placeholders will be added once the backend server is implemented.
+
+### Database
+
+Database setup is currently pending and is planned for **Week 2** using PostgreSQL.
+
+## 3. How to Run
+
 Start the local development server:
+
 ```bash
 npm run dev
-Open http://localhost:5173 in your browser. You will see a plain-text skeleton UI proving the initial React state logic is functioning.
+```
 
-4. Features and usage
-Current Prototype Features (Demo Mode):
+After starting the server, open the local URL shown in the terminal, typically:
 
-View Inventory: Upon loading the app, users see their current clothing items rendered from local React state.
+```text
+http://localhost:5173
+```
 
-Add Item: Clicking "+ Add Item" pushes a new mock clothing item into the state array, immediately updating the Wardrobe Gallery UI.
+The current version displays a basic prototype UI demonstrating the initial React state logic and application structure.
 
-Log Outfit: Under the Saved Outfits section, clicking "Log as Worn Today" pushes the outfit's ID into the wear logs state, updating the analytics section at the bottom of the page.
+## 4. Features and Usage
 
-(Note: There is no backend API yet. All data is handled via local React state and will reset upon refreshing the browser).
+### Current Prototype Features
 
-Planned Features (Weeks 2-3):
+The current Week 1 prototype operates in **Demo Mode** using local React state.
 
-Digital Wardrobe Gallery: View, filter, and upload photos of individual clothing items.
+#### View Inventory
 
-Outfit Builder: Mix and match uploaded items to create and save specific outfits.
+Upon loading the application, users can view the current clothing items rendered from local React state.
 
-Calendar Planner: Assign saved outfits to specific dates or upcoming occasions.
+#### Add Item
 
-Closet Insights: Analytics page displaying visualizations like cost-per-wear and wardrobe value.
+Clicking **"+ Add Item"** adds a mock clothing item to the local state array and immediately updates the Wardrobe Gallery UI.
 
-5. Project structure
-src/ - React front end, built by Vite
+#### Log Outfit
 
-src/App.jsx - Core state logic, mock database arrays, and skeleton UI
+Under the **Saved Outfits** section, clicking **"Log as Worn Today"** adds the selected outfit's ID to the wear logs state. The analytics section is then updated based on the logged outfit.
 
-src/main.jsx - Application entry point
+> **Note:** There is currently no backend API or database connection. All data is stored temporarily in React state and will be reset when the browser page is refreshed.
 
-project/ - Internal workspace documentation and screenshots
+### Planned Features
 
-journal/ - Weekly reflection journals
+The following features are planned for **Weeks 2-3**:
 
-6. Screenshots
-7. Known issues and next steps
-Missing Styles: The application is entirely unstyled. The Figma design system (including custom typography and layout grids) still needs to be translated into CSS.
+* **Digital Wardrobe Gallery**
 
-Data Persistence: There is no server, database, or API connected. The app forgets all inventory and wear logs upon refreshing the page.
+  * View individual clothing items.
+  * Filter wardrobe items.
+  * Upload photos of clothing items.
+  * Organize items by category and other attributes.
 
-Next Steps: Week 2 focuses on setting up the Express API, configuring the PostgreSQL database, and beginning the CSS styling for the Wardrobe Gallery.
+* **Outfit Builder**
 
-AI Usage
-AI was used to help structure the initial project proposal, refine the design system tokens, and format this documentation. For full details, see AI-USAGE.md.
+  * Mix and match wardrobe items.
+  * Create outfits.
+  * Save created outfits for future use.
+
+* **Calendar Planner**
+
+  * Assign saved outfits to specific dates.
+  * Plan outfits for upcoming occasions.
+
+* **Closet Insights**
+
+  * View wardrobe-related analytics.
+  * Display visualizations such as cost-per-wear.
+  * Analyze wardrobe value and usage.
+
+## 5. Project Structure
+
+```text
+Paradul-Tongol/
+├── src/
+│   ├── App.jsx        # Core state logic, mock data, and prototype UI
+│   └── main.jsx       # Application entry point
+│
+├── project/           # Internal workspace documentation and screenshots
+├── journal/           # Weekly reflection journals
+│
+├── package.json       # Project dependencies and scripts
+└── README.md          # Project documentation
+```
+
+## 6. Screenshots
+
+Screenshots will be added as the application's UI development progresses.
+
+<!-- Add screenshots here when available. -->
+
+## 7. Known Issues and Next Steps
+
+### Known Issues
+
+* **Missing Styles:**
+  The current prototype is minimally styled. The Figma design system, including typography, spacing, colors, and layout grids, still needs to be translated into the application's CSS.
+
+* **No Data Persistence:**
+  There is currently no server, database, or backend API connected. Inventory items, outfits, and wear logs are stored only in local React state and are lost when the page is refreshed.
+
+* **Mock Data:**
+  The current prototype uses mock clothing items and outfit data instead of persistent user data.
+
+### Next Steps
+
+Week 2 will focus on:
+
+1. Setting up the Express backend API.
+2. Configuring the PostgreSQL database.
+3. Connecting the frontend to the backend.
+4. Implementing data persistence.
+5. Beginning CSS implementation based on the Figma design.
+6. Developing the Wardrobe Gallery.
+
+## 8. AI Usage
+
+AI tools may be used during development as a supporting resource for:
+
+* Understanding programming concepts and documentation.
+* Debugging and troubleshooting errors.
+* Generating suggestions for implementation approaches.
+* Reviewing and improving code.
+* Assisting with documentation.
+
+AI-generated code and suggestions should be reviewed, tested, and understood before being incorporated into the project.
+
+The project developers remain responsible for the final implementation and functionality of the application.
