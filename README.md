@@ -1,174 +1,62 @@
-# Your Project Name
+# paradu'l
 
-> **Replace this whole file.** It is a worked example of the README your project
-> will be graded from, not a file to leave as it is. Start with
-> [START-HERE.md](START-HERE.md).
+## 1. Overview
+paradu'l is a web application that helps users digitally organize their wardrobe, mix and match outfits, and use personalized data insights to make smarter fashion choices. It solves the problem of impulsive shopping and wardrobe underutilization by giving people a visual inventory of what they already own to better understand their personal style.
 
-One sentence saying what this does and who it is for.
+## 2. Setup and installation
+*Note: The application is currently in Week 1 scaffolding (Demo Mode). No database or API is required to run this version.*
 
-**Live site:** https://yourusername.github.io/your-repo-name/
-**API:** https://your-api.onrender.com/healthz
-**Demo video:** (link)
+*   **Prerequisites:** Node.js installed on your machine.
+*   **Clone the repository:** `git clone https://github.com/Jeniii26/Paradul-Tongol.git`
+*   **Install dependencies:** Run `npm install` inside the project folder.
+*   **Environment variables:** None required for Week 1 (Mock API mode). Placeholders will be added when the server is built.
+*   **Database setup:** Pending for Week 2 (PostgreSQL).
 
-> **This deployment is running in demo mode.** The interface is real; the backend
-> is simulated in your browser so the site works without a server. See
-> [Demo mode](#demo-mode) below. Delete this quote once your API is live.
+## 3. How to run it
+Start the local development server:
+```bash
+npm run dev
+Open http://localhost:5173 in your browser. You will see a plain-text skeleton UI proving the initial React state logic is functioning.
 
-![A screenshot of the main screen](docs/assets/screenshot.png)
+4. Features and usage
+Current Prototype Features (Demo Mode):
 
-## What it does
+View Inventory: Upon loading the app, users see their current clothing items rendered from local React state.
 
-- Report a sighting with a place, a description and a spookiness rating
-- Browse everything reported, newest first
-- Delete a report
+Add Item: Clicking "+ Add Item" pushes a new mock clothing item into the state array, immediately updating the Wardrobe Gallery UI.
 
-## Built with
+Log Outfit: Under the Saved Outfits section, clicking "Log as Worn Today" pushes the outfit's ID into the wear logs state, updating the analytics section at the bottom of the page.
 
-React and Vite on the front end, Express and PostgreSQL on the back end. The
-client is on GitHub Pages, the API on (host), the database on (host).
+(Note: There is no backend API yet. All data is handled via local React state and will reset upon refreshing the browser).
 
-## Demo mode
+Planned Features (Weeks 2-3):
 
-This repository can run two ways, chosen by one environment variable at **build**
-time.
+Digital Wardrobe Gallery: View, filter, and upload photos of individual clothing items.
 
-**Demo mode is the default.** Only the exact string `false` turns it off, so a
-forgotten or mistyped variable leaves you on the simulated backend with a visible
-notice rather than on a silently broken build.
+Outfit Builder: Mix and match uploaded items to create and save specific outfits.
 
-| `VITE_USE_MOCK_API` | What happens |
-| --- | --- |
-| unset, or `true` | The client answers its own requests from `localStorage`. No server, no database, nothing shared between visitors. This is what the template ships with, so the GitHub Pages link works on day one. |
-| `false` | The client calls the Express API at `VITE_API_BASE_URL`, which reads and writes real PostgreSQL. |
+Calendar Planner: Assign saved outfits to specific dates or upcoming occasions.
 
-**Demo mode is a starting point and a fallback, not a finished project.** Your
-finals submission is all three pieces deployed and talking to each other. Demo
-mode is there so you can build the interface in week one before the API exists,
-and so you have something to show if a free tier is asleep during your demo.
+Closet Insights: Analytics page displaying visualizations like cost-per-wear and wardrobe value.
 
-GitHub Pages serves files and cannot run Node, so the API and the database can
-never live there. They go somewhere else:
+5. Project structure
+src/ - React front end, built by Vite
 
-| Piece | Options |
-| --- | --- |
-| **API** | Render, Railway, Fly.io, Koyeb, a VPS, or [self-hosted behind a tunnel](../content/extending-your-app/11-self-hosting.md) |
-| **Database** | Neon, Supabase, Railway, Aiven, or your own PostgreSQL |
+src/App.jsx - Core state logic, mock database arrays, and skeleton UI
 
-`content/extending-your-app/` in your course workspace walks through all of it.
-Page 10 is the decision page if you do not know which to pick.
+src/main.jsx - Application entry point
 
-## Running it yourself
+project/ - Internal workspace documentation and screenshots
 
-**The client only, in demo mode.** No database needed.
+journal/ - Weekly reflection journals
 
-    cd client
-    npm install
-    cp .env.example .env        # VITE_USE_MOCK_API stays true
-    npm run dev                 # http://localhost:5173
+6. Screenshots
+7. Known issues and next steps
+Missing Styles: The application is entirely unstyled. The Figma design system (including custom typography and layout grids) still needs to be translated into CSS.
 
-**The whole stack.** Needs a PostgreSQL, either local or hosted.
+Data Persistence: There is no server, database, or API connected. The app forgets all inventory and wear logs upon refreshing the page.
 
-    # 1. the database
-    docker run --name my-pg -e POSTGRES_PASSWORD=devpassword \
-      -e POSTGRES_DB=haunted -p 5432:5432 -d postgres:17
+Next Steps: Week 2 focuses on setting up the Express API, configuring the PostgreSQL database, and beginning the CSS styling for the Wardrobe Gallery.
 
-    # 2. the API
-    cd server
-    npm install
-    cp .env.example .env        # check DATABASE_URL
-    npm run db:reset            # creates the tables and adds sample rows
-    npm run dev                 # http://localhost:3000
-
-    # 3. the client, in another terminal
-    cd client
-    npm install
-    cp .env.example .env
-    # set VITE_USE_MOCK_API=false
-    npm run dev
-
-Check the API on its own before you blame the client:
-
-    curl http://localhost:3000/healthz     # is the process alive
-    curl http://localhost:3000/readyz      # is the database reachable
-    curl http://localhost:3000/api/sightings
-
-## Environment variables
-
-None of these are committed. `.env.example` in each folder lists them with
-placeholder values.
-
-| Name | Where | What it is |
-| --- | --- | --- |
-| `DATABASE_URL` | server | PostgreSQL connection string. Contains a password |
-| `CORS_ORIGINS` | server | comma-separated origins allowed to call the API |
-| `NODE_ENV` | server | `production` on your host |
-| `PORT` | server | **set by the host**, do not set it yourself |
-| `VITE_USE_MOCK_API` | client, at build time | only `false` turns demo mode off; unset means on |
-| `VITE_API_BASE_URL` | client, at build time | your API's public URL, no trailing slash |
-
-Every `VITE_` value is compiled into the built JavaScript and is **public**.
-Never put a key, a password or a connection string in one.
-
-## Deploying
-
-**Client, to GitHub Pages.** Already wired up in
-`.github/workflows/deploy-pages.yml`. Two one-time steps:
-
-1. **Settings > Pages > Build and deployment > Source: GitHub Actions.** Without
-   this the workflow goes green and publishes nothing.
-2. Nothing else, until your API is live. Demo mode is the default, so the first
-   deploy works on its own. When the API is up, add `VITE_USE_MOCK_API` = `false`
-   and `VITE_API_BASE_URL` under **Settings > Secrets and variables > Actions >
-   Variables**, then re-run the workflow.
-
-The repository must be **public** for Pages to serve it on a free account.
-
-**API and database.** Not automated here, because most hosts deploy straight from
-your repository with no workflow at all. Point your host at the `server/` folder,
-set the environment variables in its dashboard, and run `server/db/schema.sql`
-once against the hosted database.
-
-## Project structure
-
-    client/          React front end, built by Vite
-      src/api/       ONE interface, two implementations, chosen by a variable
-      src/components/
-    server/          Express API
-      db/            pool, schema.sql, seed.sql, and a runner for them
-    compose.yml      only if you self-host
-    docs/            your planning documents and weekly reports
-
-## Architecture
-
-Three or four sentences, or a small diagram. Which piece talks to which, and
-where each one is hosted.
-
-## What I would do next
-
-Three honest bullets. This paragraph is worth more than it looks.
-
-## Author
-
-Your name, and a link. Course and section.
-
-## AI use
-
-If you used AI while building this, say so here. Honest disclosure is the
-standard in this course and increasingly outside it, and reporting heavy use
-accurately costs you nothing.
-
-This section is the last 10 points of the finals badge, and it wants three
-things:
-
-![Built with AI assistance](https://img.shields.io/badge/built%20with-AI%20assistance-0b5fff)
-
-- the badge above, or one you like better
-- a line naming which assistant you used and how much of the work it touched
-- a link to [AI-USAGE.md](AI-USAGE.md), where the full account lives
-
-Keep the detail in `AI-USAGE.md` rather than here. This section is the summary a
-visitor reads; that file is the record the badge is graded from.
-
-## Licence
-
-MIT, see [LICENSE](LICENSE). Put your own name in it.
+AI Usage
+AI was used to help structure the initial project proposal, refine the design system tokens, and format this documentation. For full details, see AI-USAGE.md.
