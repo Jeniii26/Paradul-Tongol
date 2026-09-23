@@ -27,6 +27,7 @@ cd Paradul-Tongol
 Run the following command inside the project folder:
 
 ```bash
+cd client
 npm install
 ```
 

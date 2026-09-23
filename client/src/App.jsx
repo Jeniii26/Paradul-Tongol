@@ -1,169 +1,83 @@
-import { useEffect, useState } from 'react'
-import { listSightings, createSighting, deleteSighting } from './api'
-import DemoNotice from './components/DemoNotice.jsx'
-
-// A deliberately small working app. Replace all of it with your own project.
-//
-// What is worth keeping is the SHAPE: four states rather than two, a loading
-// message that admits a free-tier server can be slow to wake, and errors that
-// say something rather than rendering an empty list.
-
-const EMPTY_FORM = { place: '', description: '', spookiness: 3 }
+import { useState } from 'react';
 
 export default function App() {
-  const [status, setStatus] = useState('loading')   // loading | ready | error
-  const [rows, setRows] = useState([])
-  const [error, setError] = useState(null)
-  const [slow, setSlow] = useState(false)
-  const [form, setForm] = useState(EMPTY_FORM)
-  const [saving, setSaving] = useState(false)
+  const [clothingItems, setClothingItems] = useState([
+    { id: 1, image_url: "https://via.placeholder.com/150", type: "Top", color: "Black", season: "All", cost: 45 },
+    { id: 2, image_url: "https://via.placeholder.com/150", type: "Bottoms", color: "Navy", season: "Winter", cost: 60 }
+  ]); 
+  
+  const [savedOutfits, setSavedOutfits] = useState([
+    { id: 1, name: "Casual Friday", item_ids: [1, 2], occasion: "Work" }
+  ]);
+  
+  const [wearLogs, setWearLogs] = useState([]);
 
-  async function load() {
-    setStatus('loading')
-    setError(null)
+  const handleAddItem = () => {
+    const newItem = { 
+      id: Date.now(), 
+      image_url: "https://via.placeholder.com/150",
+      type: "Shoes", 
+      color: "Burgundy", 
+      season: "Fall",
+      cost: 120
+    };
+    setClothingItems([...clothingItems, newItem]);
+  };
 
-    // A free-tier API sleeps. If this is taking a while, say so rather than
-    // spinning silently, which looks broken. See page 6.
-    const timer = setTimeout(() => setSlow(true), 3000)
-
-    try {
-      setRows(await listSightings())
-      setStatus('ready')
-    } catch (caught) {
-      setError(caught)
-      setStatus('error')
-    } finally {
-      clearTimeout(timer)
-      setSlow(false)
-    }
-  }
-
-  useEffect(() => {
-    load()
-  }, [])
-
-  async function handleSubmit(event) {
-    event.preventDefault()
-    if (!form.place.trim()) return
-
-    setSaving(true)
-    try {
-      const created = await createSighting({
-        place: form.place.trim(),
-        description: form.description.trim(),
-        spookiness: Number(form.spookiness),
-      })
-      setRows([created, ...rows])
-      setForm(EMPTY_FORM)
-    } catch (caught) {
-      setError(caught)
-    } finally {
-      setSaving(false)
-    }
-  }
-
-  async function handleDelete(id) {
-    const previous = rows
-    setRows(rows.filter((row) => row.id !== id))   // optimistic
-    try {
-      await deleteSighting(id)
-    } catch (caught) {
-      setRows(previous)                            // put it back on failure
-      setError(caught)
-    }
-  }
+  const handleLogOutfit = (outfitId) => {
+    const newLog = {
+      id: Date.now(),
+      outfit_id: outfitId,
+      date_worn: new Date().toISOString().split('T')[0]
+    };
+    setWearLogs([...wearLogs, newLog]);
+  };
 
   return (
-    <div className="page">
-      <header>
-        <h1>HAUnted Sightings</h1>
-        <p className="lede">
-          Replace this with your own project. This one is here so the template
-          has something that works.
-        </p>
-      </header>
+    <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
+      <h1>paradu'l</h1>
 
-      <DemoNotice />
-
-      {error && (
-        <p className="error" role="alert">
-          {error.message} <button onClick={load}>Try again</button>
-        </p>
-      )}
-
-      <form onSubmit={handleSubmit} className="card">
-        <h2>Report a sighting</h2>
-
-        <label htmlFor="place">Place</label>
-        <input
-          id="place"
-          value={form.place}
-          onChange={(event) => setForm({ ...form, place: event.target.value })}
-          maxLength={120}
-          required
-        />
-
-        <label htmlFor="description">What happened</label>
-        <textarea
-          id="description"
-          value={form.description}
-          onChange={(event) => setForm({ ...form, description: event.target.value })}
-          maxLength={2000}
-          rows={3}
-        />
-
-        <label htmlFor="spookiness">Spookiness, 1 to 5</label>
-        <input
-          id="spookiness"
-          type="number"
-          min="1"
-          max="5"
-          value={form.spookiness}
-          onChange={(event) => setForm({ ...form, spookiness: event.target.value })}
-          required
-        />
-
-        <button type="submit" disabled={saving}>
-          {saving ? 'Saving...' : 'Add sighting'}
-        </button>
-      </form>
-
-      {/* Four states. Empty and error are different things and must not look
-          the same: an empty list means "nothing here yet", an error means
-          "we could not find out". */}
-      {status === 'loading' && (
-        <p className="muted">
-          Loading{slow ? '. The server may be waking up, which can take up to a minute.' : '...'}
-        </p>
-      )}
-
-      {status === 'ready' && rows.length === 0 && (
-        <p className="muted">No sightings reported yet. Add the first one above.</p>
-      )}
-
-      {status === 'ready' && rows.length > 0 && (
-        <ul className="list">
-          {rows.map((row) => (
-            <li key={row.id} className="card">
-              <div className="row-head">
-                <h3>{row.place}</h3>
-                <span className="spooky" aria-label={`Spookiness ${row.spookiness} of 5`}>
-                  {'*'.repeat(row.spookiness)}
-                </span>
-              </div>
-              {row.description
-                ? <p>{row.description}</p>
-                : <p className="muted">No description given.</p>}
-              <footer>
-                <time dateTime={row.reported_at}>
-                  {new Date(row.reported_at).toLocaleString()}
-                </time>
-                <button onClick={() => handleDelete(row.id)}>Delete</button>
-              </footer>
+      <section>
+        <h2>1. Clothing Items</h2>
+        <button onClick={handleAddItem}>+ Add Item</button>
+        <ul>
+          {clothingItems.map(item => (
+            <li key={item.id}>
+              [{item.type}] {item.color} - {item.season}
+              <br /> Image: {item.image_url} (ID: {item.id})
             </li>
           ))}
         </ul>
-      )}
+      </section>
+
+      <section>
+        <h2>2. Saved Outfits</h2>
+        <ul>
+          {savedOutfits.map(outfit => (
+            <li key={outfit.id}>
+              <strong>{outfit.name}</strong> ({outfit.occasion}) 
+              <br /> Items included: {outfit.item_ids.join(", ")}
+              <br />
+              <button onClick={() => handleLogOutfit(outfit.id)}>
+                Log as Worn Today
+              </button>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section>
+        <h2>3. Wear Logs</h2>
+        {wearLogs.length === 0 ? <p>No outfits logged yet.</p> : (
+          <ul>
+            {wearLogs.map(log => (
+              <li key={log.id}>
+                Outfit ID: {log.outfit_id} worn on {log.date_worn}
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
     </div>
-  )
+  );
 }
